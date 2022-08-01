@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "PAList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+   
+<h3><b>Claim Number List</b></h3>
+<div class="row">
+    <div class="col-md-2">
+        <button>Create New Claim</button>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="table-responsive col-md-12" id="divPrinted" hidden="hidden">
+        <table id="tblPrintedPA" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+            <thead>
+                <tr>
+                    <th width="5%">No</th>
+                    <th width="20%">No Klaim</th>
+                    <th width="20%">No PA</th>
+                    <th width="25%">Subdist</th>
+                    <th width="20%">Amount</th>
+                    <th width="20%">Printed</th>
+                    <th width="10%">Detail</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyPrintedPA">
+                <tr>
+                    <td>1</td>
+                    <td>CLM/CBG/202111/001</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="table-responsive col-md-12" id="divUnPrinted">
+        <table id="tblUnPrintedPA" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+            <thead>
+                <tr>
+                    <th width="5%">No</th>
+                    <th width="20%">No Klaim</th>
+                    <th width="20%">No Memo</th>
+                    <th width="20%">No PA</th>
+                    <th width="25%">Subdist</th>
+                    <th width="10%">Detail</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyPrintedPA">
+                <tr>
+                    <td>1</td>
+                    <td>CLM/CBG/202111/001</td>
+                    <td>MEMO/200/202110/001</td>
+                    <td>1171/XI/MSD-001/XI/200</td>
+                    <td>PT Masamedi Intifarmindo || 30291805</td>
+                    <td><button style="width:100%;">Detail</button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>CLM/CBG/202111/256</td>
+                    <td>MEMO/201/202110/002</td>
+                    <td>1820/XI/LTI-021/XI/250</td>
+                    <td>PT Lautan Mas || 2092813</td>
+                    <td><button style="width:100%;">Detail</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+   
+ 
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        GetUnPrintedList();
+        GetPrintedList();
+        $("#typePA").select2();
+        $("#typePA").change(function () {
+            console.log($("#typePA").val());
+            if ($("#typePA").val() == 1) {
+                $("#divPrinted").attr("hidden", true);
+                $("#divUnPrinted").attr("hidden", false);
+            } else {
+                $("#divPrinted").attr("hidden", false);
+                $("#divUnPrinted").attr("hidden", true);
+            }
+        });
+        $("#tblUnPrintedPA").dataTable();
+    });
+
+    function GetUnPrintedList() {
+        var dto = { Option: "37" }
+        console.log(dto);
+       $.ajax({
+           type: "POST",
+           url: "GetPrintedGetData",
+           dataType: "json",
+           data: JSON.stringify(dto),
+           contentType: "application/json;charset=utf-8",
+           success: function (response) {
+               console.log(dto);
+                var table = $('#tblUnPrintedPA').DataTable({
+                    "pageLength": 5,
+                    "lengthChange": true,
+                    "searching": true,
+                    "bDestroy": true,
+                    "data": JSON.parse(response),
+                    "columns": [
+                        { "data": "No" },
+                        { "data": "NoPayment"},
+                        { "data": "Subdist" },
+                        { "data": "Amount" },
+                        { "data": "PrintCounter" },
+                        {
+                            "data": null,
+                            "defaultContent": "<button class='btn btn- primary' id=btnDetail onclick='Detail(this)'>Detail</button>"
+                        }
+                    ],
+                    "order": [[0, 'asc']]
+                });
+            }
+       });
+    }
+
+    function GetPrintedList() {
+        var dto = { Option : 38 }
+        $.ajax({
+            type: "POST",
+            url: "GetPrintedGetData",
+            dataType: "json",
+            data: JSON.stringify(dto),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                console.log(JSON.parse(response));
+                var table = $('#tblPrintedPA').DataTable({
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": false,
+                    "data": JSON.parse(response),
+                    "columns": [
+                        { "data": "No" },
+                        { "data": "NoPayment" },
+                        { "data": "Subdist" },
+                        { "data": "Amount" },
+                        { "data": "PrintCounter" },
+                        {
+                            "data": null,
+                            "defaultContent": "<button class='btn btn- primary' id=btnDetail onclick='Detail(this)'>Detail</button>"
+                        }
+                    ],  
+                    "order": [[0, 'asc']]
+                });
+            }
+        });
+    }
+
+    function Detail(button) {
+        var row = $(button).closest("TR");
+        var NoPASend = $("TD", row).eq(1).html();
+        var QRCodeText = "http://b7-dc1b7portal/PrintOutDFIS/Form/GenerateQR.aspx?NoPA=" + NoPASend;
+        var QRCodeImagePath = "UploadPath"
+        var dto = { QRCodeText: QRCodeText, NoPA: NoPASend }
+        $.ajax({
+            type: "POST",
+            url: "Generate",
+            dataType: "json",
+            data: JSON.stringify(dto),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                console.log("testing");
+                window.open("http://b7-dc1b7portal/PrintOutDFIS/Form/GenerateQR.aspx?NoPA=" + NoPASend + "&QRCodeText=" + QRCodeText + "&QRCodeImagePath=" + QRCodeImagePath, "_blank");
+            }
+        });
+    }
+</script>
+

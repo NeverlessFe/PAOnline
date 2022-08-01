@@ -1,0 +1,754 @@
+﻿
+@{
+    ViewBag.Title = "CreateClaim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h3><b>Create Claim</b></h3>
+
+<hr />
+<div class="col-md-12">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Username</label>
+        <div class="col-sm-10">
+            <input type="text" id="lblUsername" class="form-control" readonly>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Apply Date</label>
+        <div class="col-sm-10">
+            @{
+                @Html.Label("ApplyDate", string.Format("{0:F}", System.DateTime.Now.ToString("dd-MM-yyyy")), new { id = "lblApplydate" })
+            }
+        </div>
+    </div>
+
+    <div class="form-group row" hidden>
+        <label class="col-sm-2 col-form-label">Region</label>
+        <div class="col-sm-10">
+            <input type="text" id="ddlRegion" class="form-control" readonly>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Cabang</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlCabang">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Subdist Bayar</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlSubdistBayar">
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense Header</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlHeaderExpense">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlItemExpense">
+            </select>
+        </div>
+    </div>
+    <div id="divCheckbox" class="form-group row" hidden>
+        <label class="col-sm-2 col-form-label" for="simpleinput">Internal</label>
+        <div class="col-sm-10">
+            <input type='checkbox' id="chxInternal" name='type'>
+        </div>
+    </div>
+    <div id="divDOF" hidden>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">No Regist</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="ddlNoRegist">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Detail Regist</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="ddlDetailRegist">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="divDetail" hidden>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="simpleinput">EO/Supplier/Subdist</label>
+            <div class="col-sm-10">
+                <input type="text" id="txtEO" class="form-control" placeholder="Input EO/Supplier/Subdist">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label class="col-sm-2 col-form-label" for="simpleinput">Bank</label>
+                <div class="col-sm-10">
+                    <input type="text" id="txtBank" class="form-control" placeholder="Input Bank">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="col-sm-5 col-form-label" for="simpleinput">Nama Rekening</label>
+                <div class="col-sm-12">
+                    <input type="text" id="txtNamaRekening" class="form-control" placeholder="Input Nama Rekening">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="col-sm-5 col-form-label" for="simpleinput">Rekening Bank</label>
+                <div class="col-sm-12">
+                    <input type="text" id="txtNoRekening" class="form-control" placeholder="Input Rekening Bank">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="example-number">Amount</label>
+            <div class="col-md-10">
+                <input class="form-control" id="txtAmount" type="number" name="number" placeholder="Input Amount Claim">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="example-textarea">Rincian Biaya Event/Program/Project</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" rows="5" id="txtRemarks" placeholder="Input Rincian Biaya Event/Program/Project"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-light waves-effect" id="btnAddDetail">Add Detail</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="divDetailtable" hidden>
+        <div class="row">
+            <div class="table-responsive col-md-12" id="divUnPrinted">
+                <table id="tblDetailClaim" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th width="35%">RINCIAN BIAYAE EVENT/PROGRAM/PROJECT</th>
+                            <th width="20%">EO/SUBDIST</th>
+                            <th width="15">BANK</th>
+                            <th width="10%">NO REK</th>
+                            <th width="20%">ATAS NAMA</th>
+                            <th width="20%">JUMLAH</th>
+                            <th width="20%">JUMLAH</th>
+                            <th width="5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyPrintedPA">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-primary waves-light waves-effect" id="btnSubmit">Submit Claim</button>
+        </div>
+    </div>
+</div>
+<script>
+    var FlagInsert = 0;
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+    function GenerateNama() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GenerateUsername',
+            type: 'post',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $("#lblUsername").val(data);
+                GetRegion();
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+    $(document).ready(function () {
+        GenerateNama();
+        GetNoRegist();
+        var Username = '@Request.RequestContext.HttpContext.Session["Username"]';
+        /*$(document).on("click", "")*/
+        $(document).on("click", "#tblDetailClaim button.delete", function () {
+            var _Remarks = $(this).closest('tr').find('td:eq(0)').text();
+            var _EO = $(this).closest('tr').find('td:eq(1)').text();
+            var _Bank = $(this).closest('tr').find('td:eq(2)').text();
+            var _NamaRek = $(this).closest('tr').find('td:eq(4)').text();
+            var _NoRek = $(this).closest('tr').find('td:eq(3)').text();
+            var _Amount = $(this).closest('tr').find('td:eq(5)').text();
+
+            $.ajax({
+                url: 'DeleteClaimDetail',
+                type: 'post',
+                data: JSON.stringify({
+                    Region: $("#ddlRegion option:selected").text(),
+                    Cabang: $("#ddlCabang option:selected").text(),
+                    Subdist: $("#ddlSubdistBayar option:selected").text(),
+                    ItemExpense: $("#ddlItemExpense option:selected").text(),
+                    Amount: _Amount,
+                    Remarks: _Remarks,
+                    EO: _EO,
+                    Bank: _Bank,
+                    NamaRek: _NamaRek,
+                    NoRek: _NoRek
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    $('#tblDetailClaim').DataTable({
+                        "pageLength": 10,
+                        "lengthChange": true,
+                        "searching": false,
+                        "data": data,
+                        "select": true,
+                        "bDestroy": true,
+                        "scrollCollapse": true,
+                        "columns": [
+                            { "data": "Remarks" },
+                            { "data": "EO" },
+                            { "data": "Bank" },
+                            { "data": "NoRek" },
+                            { "data": "NamaRek" },
+                            { "data": "Amount" },
+                            {
+                                "data": null,
+                                "defaultContent": "<button class='form-control-sm delete' type='button' name='delete'>Delete</button> "
+                            },
+                        ]
+                    });
+                    FlagInsert = 0;
+                    //console.log(data);
+                    //$('#ddlRegion').empty();
+                    //$('#ddlRegion').append(new Option('--Select Region--', null));
+                    //$.each(JSON.parse(data), function (key, value) {
+                    //    $('#ddlRegion').append(new Option(value.RegionDesc, value.RegionID));
+                    //});
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        });
+
+        $("#ddlCabang").change(function () {
+            GetSubdist();
+        });
+
+        $("#ddlNoRegist").change(function () {
+            GetRegistDetail();
+        });
+
+        $("#ddlHeaderExpense").change(function () {
+            GetExpenseItem();
+        });
+
+        $("#ddlDetailRegist").change(function () {
+            GetDetailAmountDOF();
+            $("#txtBank").val('-');
+            $("#txtNamaRekening").val('-');
+            $("#txtNoRekening").val('-');
+            $("#txtEO").val($("#ddlSubdistBayar option:selected").text());
+            var RemarksNote = "Discount on Faktur NoClaim Subdist : ";
+            $("#txtRemarks").text(RemarksNote);
+            $("#txtAmount").attr("disabled", true);
+            $("#txtBank").attr("disabled", true);
+            $("#txtNamaRekening").attr("disabled", true);
+            $("#txtNoRekening").attr("disabled", true);
+            $("#txtEO").attr("disabled", true);
+            $("#divDetail").prop("hidden", false);
+        });
+
+        $("#ddlItemExpense").change(function () {
+            if ($("#ddlItemExpense").val() == "DOF" || $("#ddlItemExpense").val() == "PM" ) {
+                $("#divDOF").prop("hidden", false);
+            } else {
+                $("#divDetail").prop("hidden", false);
+                $("#divCheckbox").prop("hidden", false);
+            }
+            
+        });
+
+        $("#ddlSubdistBayar").change(function () {
+            GetHeaderExpense();
+        });
+
+        $("#btnAddDetail").click(function () {
+            if (FlagInsert != 0) {
+                Swal.fire(
+                    'Error',
+                    '1 nomor Claim hanya dapat memiliki 1 row detail, hapus existing detail untuk melakukan penambahan detail',
+                    'error'
+                ).then((result) => {
+                    return;
+                });
+                return;
+            }
+            var username = $("#lblUsername").val();
+            if ($("#txtAmount").val() == "" || $("#txtAmount").val() == null ||
+                $("#txtRemarks").val() == "" || $("#txtRemarks").val() == null ||
+                $("#txtEO").val() == "" || $("#txtEO").val() == null ||
+                $("#txtBank").val() == "" || $("#txtBank").val() == null ||
+                $("#txtNamaRekening").val() == "" || $("#txtNamaRekening").val() == null ||
+                $("#txtNoRekening").val() == "" || $("#txtNoRekening").val() == null) {
+                alert('Harap isi seluruh data yang dibutuhkan');
+
+                return;
+            }
+            
+            $.ajax({
+                url: 'InsertClaimDetail',
+                type: 'post',
+                data: JSON.stringify({
+                    Region: $("#ddlRegion option:selected").text(),
+                    Cabang: $("#ddlCabang option:selected").text(),
+                    Subdist: $("#ddlSubdistBayar option:selected").text(),
+                    ItemExpense: $("#ddlItemExpense option:selected").text(),
+                    Amount: $("#txtAmount").val(),
+                    Remarks: $("#txtRemarks").val(),
+                    EO: $("#txtEO").val(),
+                    Bank: $("#txtBank").val(),
+                    NamaRek: $("#txtNamaRekening").val(),
+                    NoRek: $("#txtNoRekening").val(),
+                    AmountShow: formatNumber($("#txtAmount").val())
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#divDetailtable").prop("hidden", false);
+                    $('#tblDetailClaim').DataTable({
+                        "pageLength": 10,
+                        "lengthChange": true,
+                        "searching": false,
+                        "data": data,
+                        "select": true,
+                        "bDestroy": true,
+                        "scrollCollapse": true,
+                        "columnDefs": [
+                            {
+                                "targets": [5],
+                                "visible": false,
+                                "searchable": false
+                            }
+                        ],
+                        "columns": [
+                            { "data": "Remarks" },
+                            { "data": "EO" },
+                            { "data": "Bank" },
+                            { "data": "NoRek" },
+                            { "data": "NamaRek" },
+                            { "data": "Amount" },
+                            { "data": "AmountShow" },
+                            {
+                                "data": null,
+                                "defaultContent": "<button class='form-control-sm delete' type='button' name='delete'>Delete</button> "
+                            },
+                        ]
+                    });
+                    var checked = $("#chxInternal").is(":checked");
+
+                    if (checked) {
+                        $("#txtAmount").val(null);
+                        $("#txtRemarks").val(null);
+                    } else {
+                        $("#ddlRegion").attr("disabled", true);
+                        $("#ddlCabang").attr("disabled", true);
+                        $("#ddlSubdistBayar").attr("disabled", true);
+                        $("#ddlItemExpense").attr("disabled", true);
+                        $("#ddlHeaderExpense").attr("disabled", true);
+
+
+
+                      
+                        $("#txtEO").val(null);
+                        $("#txtBank").val(null);
+                        $("#txtNamaRekening").val(null);
+                        $("#txtNoRekening").val(null);
+                    }
+                    FlagInsert=1;
+                    //console.log(data);
+                    //$('#ddlRegion').empty();
+                    //$('#ddlRegion').append(new Option('--Select Region--', null));
+                    //$.each(JSON.parse(data), function (key, value) {
+                    //    $('#ddlRegion').append(new Option(value.RegionDesc, value.RegionID));
+                    //});
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        });
+
+        $("#btnSubmit").click(function () {
+            var username = $("#lblUsername").val();
+            var _No = $("#ddlDetailRegist").val();
+            var _NoRegist = $("#ddlNoRegist").val();
+            if (
+                /*$("#ddlRegion").val() == "" || $("#ddlRegion").val() == null ||*/
+                $("#ddlSubdistBayar").val() == "" || $("#ddlSubdistBayar").val() == null ||
+                $("#ddlHeaderExpense").val() == "" || $("#ddlHeaderExpense").val() == null ||
+                $("#ddlItemExpense").val() == "" || $("#ddlItemExpense").val() == null) {
+                alert('Harap isi seluruh data yang dibutuhkan');
+
+                return;
+            }
+            
+            $.ajax({
+                url: 'SubmitClaim',
+                type: 'post',
+                data: JSON.stringify({
+                    Region: $("#ddlRegion option:selected").val(),
+                    Cabang: $("#ddlCabang option:selected").val(),
+                    SiteUsedId: $("#ddlSubdistBayar option:selected").val(),
+                    ItemExpense: $("#ddlItemExpense option:selected").val(),
+                    Username: $("#lblUsername").val(),
+                    No: _No,
+                    NoMemo: _NoRegist
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(JSON.parse(data));
+                    $.each(JSON.parse(data), function (key, value) {
+                        NoClaim = value.Status;
+                    });
+
+                    if (NoClaim == "INVALID") {
+                        Swal.fire(
+                            'Error',
+                            'Submit No Claim gagal karena : ' + NoClaim,
+                            'error'
+                        ).then((result) => {
+                            if (result.value) {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Success',
+                            'Nomor Claim berhasil dibuat dengan nomor : ' + NoClaim,
+                            'success'
+                        ).then((result) => {
+                            if (result.value) {
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        });
+
+        $("#chxInternal").click(function () {
+            var checked = $("#chxInternal").is(":checked");
+            if (checked) {
+                $("#txtBank").val('-');
+                $("#txtNamaRekening").val('-');
+                $("#txtNoRekening").val('-');
+                $("#txtEO").val($("#ddlSubdistBayar option:selected").text());
+
+                $("#txtBank").attr("disabled", true);
+                $("#txtNamaRekening").attr("disabled", true);
+                $("#txtNoRekening").attr("disabled", true);
+                $("#txtEO").attr("disabled", true);
+            } else {
+                $("#txtBank").val(null);
+                $("#txtNamaRekening").val(null);
+                $("#txtNoRekening").val(null);
+                $("#txtEO").val(null);
+
+                $("#txtBank").attr("disabled", false);
+                $("#txtNamaRekening").attr("disabled", false);
+                $("#txtNoRekening").attr("disabled", false);
+                $("#txtEO").attr("disabled", false);
+            }
+        });
+    });
+
+    function GetRegion() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 1,
+                SP: "[dbo].[STP_ClaimDDL]",
+                Username: username
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlRegion').val(value.RegionID);
+                });
+                GetCabang();
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetNoRegist() {
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 15,
+                SP: "[dbo].[STP_ClaimDDL]"
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlNoRegist').empty();
+                $('#ddlNoRegist').append(new Option('--Select NoRegist--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlNoRegist').append(new Option(value.NoRegist_PK, value.NoRegist_PK));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetRegistDetail(){
+        _NoRegist = $("#ddlNoRegist").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 14,
+                SP: "[dbo].[STP_ClaimDDL]",
+                NoMemo: _NoRegist
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlDetailRegist').empty();
+                $('#ddlDetailRegist').append(new Option('--Select Detail--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlDetailRegist').append(new Option(value.Description, value.No));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetDetailAmountDOF() {
+        _NoRegist = $("#ddlNoRegist").val();
+        _No = $("#ddlDetailRegist").val();
+        $.ajax({
+            url: 'GetDOFDetailAmount',
+            type: 'post',
+            data: JSON.stringify({
+                NoRegist: _NoRegist,
+                No: _No
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#txtAmount').val(value.Amount);
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetLineDOF() {
+        var _NoRegist = $("#ddlNoRegist").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 14,
+                SP: "[dbo].[STP_ClaimDDL]",
+                NoMemo: _NoRegist
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlCabang').empty();
+                $('#ddlCabang').append(new Option('--Select Cabang--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlCabang').append(new Option(value.NamaCabang, value.Cabang));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetCabang() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 5,
+                SP: "[dbo].[STP_ClaimDDL]",
+                Region: $("#ddlRegion").val(),
+                Username: username
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlCabang').empty();
+                $('#ddlCabang').append(new Option('--Select Cabang--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlCabang').append(new Option(value.NamaCabang, value.Cabang));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetSubdist() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 4,
+                SP: "[dbo].[STP_ClaimDDL]",
+                Region: $("#ddlRegion").val(),
+                Cabang: $("#ddlCabang").val(),
+                Username: username
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlSubdistBayar').empty();
+                $('#ddlSubdistBayar').append(new Option('--Select Subdist--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlSubdistBayar').append(new Option(value.SubdistDisplay, value.KodeSubDist));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetHeaderExpense() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 2,
+                SP: "[dbo].[STP_ClaimDDL]"
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlHeaderExpense').empty();
+                $('#ddlHeaderExpense').append(new Option('--Select Subdist--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlHeaderExpense').append(new Option(value.SubdistDisplay, value.KodeSubDist));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetHeaderExpense() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 2,
+                SP: "[dbo].[STP_ClaimDDL]"
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlHeaderExpense').empty();
+                $('#ddlHeaderExpense').append(new Option('--Select HeaderExpense--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlHeaderExpense').append(new Option(value.Description, value.HeaderExpenseID));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetExpenseItem() {
+        var username = $("#lblUsername").val();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 3,
+                SP: "[dbo].[STP_ClaimDDL]",
+                HeaderExpense: $("#ddlHeaderExpense").val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data);
+                $('#ddlItemExpense').empty();
+                $('#ddlItemExpense').append(new Option('--Select HeaderExpense--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlItemExpense').append(new Option(value.ExpenseItemName, value.ExpenseItemCode));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+
+</script>

@@ -1,0 +1,158 @@
+﻿@{ Layout = null; }
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>PA Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/Image/favicon.ico">
+
+    <!-- App css -->
+    <link href="~/Content/ContentTemplate/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/ContentTemplate/icons.css" rel="stylesheet" />
+    <link href="~/Content/ContentTemplate/style.css" rel="stylesheet" />
+    <link href="~/Content/ContentTemplate/sweetalert.css" rel="stylesheet" />
+    <script src="~/Scripts/Template/modernizr.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div class="accountbg" style="background: url('../Content/Image/bg-b7.jpg'); background-size: cover;background-position: center;">
+
+    </div>
+
+    <div class="wrapper-page account-page-full">
+        <div class="card">
+            <div class="card-block">
+
+                <div class="account-box">
+
+                    <div class="card-box p-5">
+                        <h2 class="text-uppercase text-center pb-4">
+                            <a href="index.html" class="text-success">
+                                <span><img src="~/Content/Image/LogoB7.png" alt="" height="60"></span>
+                            </a>
+                        </h2>
+
+                        <form class="" action="#">
+
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label for="emailaddress">Username</label>
+                                    <input class="form-control" type="text" id="txtUsername" required="" placeholder="Inputkan Username Anda">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="password" required="" id="txtPassword" placeholder="Inputkan Password Anda">
+                                </div>
+                            </div>
+
+                            <div class="form-group row text-center">
+                                <div class="col-12">
+                                    <button class="btn btn-block btn-custom waves-effect waves-light" type="button" id="btnSignIn">Sign In</button>
+                                </div>
+                            </div>
+
+                            <div id="divloading" style="position:fixed;z-index:1000;margin:auto;text-align:center;margin-left:10%;margin-top:5%" hidden="hidden">
+                                <img src="~/Content/Image/Loading.gif" style="width:50%;height:50%;">
+                            </div>
+                        </form> 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="m-t-40 text-center">
+            <p class="account-copyright">2021 © IntranetPortal <span class="d-none d-sm-inline-block"> - PT Bintang Toedjoe</span></p>
+        </div>
+
+    </div>
+
+
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+
+    <!-- App js -->
+    <script src="~/Scripts/jquery.core.js"></script>
+    <script src="~/Scripts/jquery.app.js"></script>
+
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <script runat="server">
+        $('#txtPassword').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $('#btnSignIn').click();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+            $("#btnSignIn").click(function () {
+                $("#divloading").attr("hidden", false);
+                var UserNameSend = $("#txtUsername").val()
+                var PasswordSend = $("#txtPassword").val();
+                if (UserNameSend == null || UserNameSend == '' ||
+                    PasswordSend == null || PasswordSend == '') {
+                    swal({
+                        title: 'Info?',
+                        text: 'Username dan password harus terisi',
+                        type: 'error',
+                        confirmButtonColor: '#DD6B55',
+                        confirmButtonText: 'Ok',
+                        cancelButtonText: 'No.'
+                    });
+                    $("#divloading").attr("hidden", true);
+                    return;
+                }
+                var dto = {
+                    UserName: UserNameSend,
+                    Password: PasswordSend
+                }
+                $.ajax({
+                    url: 'LoginExec',
+                    type: 'post',
+                    data: JSON.stringify(dto),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#divloading").attr("hidden", true);
+                        console.log(data);
+                        if (data == 'UNVALID') {
+                            swal({
+                                title: 'Error',
+                                text: 'Username atau Password yang anda masukan salah',
+                                type: 'error',
+                                confirmButtonColor: '#DD6B55',
+                                timer: 3000,
+                                showCancelButton: false, // There won't be any cancel button
+                                showConfirmButton: false
+                            });
+                        } else {
+                            window.location.href = '../Home/index';
+                        }
+
+                    },
+                    error: function (ex) {
+                        alert(JSON.stringify(ex));
+                    }
+                });
+
+            });
+        });</script>
+</body>
+</html>

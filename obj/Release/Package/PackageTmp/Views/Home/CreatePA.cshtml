@@ -1,0 +1,578 @@
+﻿
+@{
+    ViewBag.Title = "CreatePA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CreatePA</h2>
+
+<h3><b>Create Payment Approval</b></h3>
+
+<hr />
+<div class="col-md-12">
+    @*----------------------------------------------------------------------------------------------------------*@
+    <div class="form-group col-md-2" hidden id="divQPLapis">
+       
+    </div>
+
+    <div class="modal fade" id="EditPA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:100%">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Detail PA</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Expense Item</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtExpenseEdit" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Remarks</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtRemarksEdit" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">EO</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtEOEdit" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Bank</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtBankEdit" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Rekening Bank</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtRekeningBankEdit" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama Rekening</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtNamaRekening" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Jumlah</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtJumlahEditNow" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">JumlahEdit</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtJumlahEdit" class="form-control">
+                            </div>
+                        </div>
+                        <button type="button" id="btnSaveEditModal" class="btn btn-secondary" data-dismiss="modal">Save</button>
+                        <button type="button" id="btnCloseModal" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*----------------------------------------------------------------------------------------------------------*@
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Apply Date</label>
+        <div class="col-sm-10">
+            @{
+                @Html.Label("ApplyDate", string.Format("{0:F}", System.DateTime.Now.ToString("dd-MM-yyyy")), new { id = "simpleinput" })
+            }
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Expense Item Header</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlHeaderExpense">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Expense Item</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlItemExpense">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">No Memo</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlMemo">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" id="divSubdistbayar">
+        <label class="col-sm-2 col-form-label">Subdist Bayar</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlSubdistBayar">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" id="divAmount" hidden>
+        <label class="col-sm-2 col-form-label" for="example-number">Amount</label>
+        <div class="col-md-10">
+            <input class="form-control" id="txtAmount" type="number" name="number" placeholder="Generate by System" readonly>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive col-md-12" id="divUnPrinted">
+            <table id="tblDetailMemo" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th width="2%"></th>
+                        <th width="5%">No</th>
+                        <th width="10%">Expense Item</th>
+                        <th width="25%">Remarks</th>
+                        <th width="10%">Eo/Supplier/Subdist</th>
+                        <th width="10%">Bank</th>
+                        <th width="20%">Rekening Bank</th>
+                        <th width="20%">Nama Rekening</th>
+                        <th width="10%">Jumlah</th>
+                        <th width="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyDetailMemo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button class="btn btn-primary waves-light waves-effect" id="btnCreatePA">Create Payment Approval</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        GetItemExpenseHeader();
+
+        $("#ddlHeaderExpense").change(function () {
+            GetExpenseItem();
+        });
+
+        $("#ddlItemExpense").change(function () {
+            GetMemoList();
+            if ($("#ddlItemExpense").val() == "PM") {
+                console.log("Masuk");
+                $("#divAmount").prop("hidden", false);
+                $("#divSubdistbayar").prop("hidden", true);
+            } else if ($("#ddlItemExpense").val() == "GTO") {
+                window.location.href = "https://b7-b2b.bintang7.com/ConvertToPA/ConvertToPA/CreateToPA";
+            } else if ($("#ddlItemExpense").val() == "IJTI") {
+                window.location.href = "https://b7-b2b.bintang7.com/AppsDFIS/PA_SPB.aspx";
+            }
+        });
+
+        $("#ddlMemo").change(function () {
+            if ($("#ddlItemExpense").val() == "PM") {
+                GetPAMinusAmount();
+                PopulateDetailMemo();
+            } else {
+                GetSubdist();
+                PopulateDetailMemo();
+            }
+        });
+    });
+
+    function GetPAMinusAmount() {
+        var _NoMemo = $("#ddlMemo").val();
+
+        $.ajax({
+            url: 'GetPAMinAmount',
+            type: 'post',
+            data: JSON.stringify({
+                NoMemo: _NoMemo
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $.each(JSON.parse(data), function (key, value) {
+                    $("#txtAmount").val(value.TransferAmountSum);
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetTotalMemo() {
+
+    }
+    function GetItemExpenseHeader() {
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 2,
+                SP: "[dbo].[STP_ClaimDDL]"
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $('#ddlHeaderExpense').empty();
+                $('#ddlHeaderExpense').append(new Option('--Select Subdist--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlHeaderExpense').append(new Option(value.Description, value.HeaderExpenseID));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetExpenseItem() {
+        var username = $("#lblUsername").text();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 3,
+                SP: "[dbo].[STP_ClaimDDL]",
+                HeaderExpense: $("#ddlHeaderExpense").val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $('#ddlItemExpense').empty();
+                $('#ddlItemExpense').append(new Option('--Select HeaderExpense--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlItemExpense').append(new Option(value.ExpenseItemName, value.ExpenseItemCode));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetMemoList() {
+        var username = $("#lblUsername").text();
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 10,
+                SP: "[dbo].[STP_ClaimDDL]",
+                ItemExpense: $("#ddlItemExpense").val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $('#ddlMemo').empty();
+                $('#ddlMemo').append(new Option('--Select No Memo--', null));
+                $.each(JSON.parse(data), function (key, value) {
+                    $('#ddlMemo').append(new Option(value.NoMemo_PK, value.NoMemo_PK));
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function GetSubdist() {
+        var username = $("#lblUsername").text();
+        var _Option = 4;
+        if ($("#ddlItemExpense").val() == "GTO" || $("#ddlItemExpense").val() == "PM") {
+            _Option = 12;
+        } else {
+            _Option = 4;
+        }
+        $.ajax({
+            url: 'GetDLL',
+            type: 'post',   
+            data: JSON.stringify({
+                Option: _Option,
+                SP: "[dbo].[STP_ClaimDDL]",
+                NoMemo: $("#ddlMemo").val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if ($("#ddlItemExpense").val() == "GTO" || $("#ddlItemExpense").val() == "PM" ) {
+                    $('#ddlSubdistBayar').empty();
+                    $('#ddlSubdistBayar').append(new Option('--Select Subdist--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlSubdistBayar').append(new Option(value.Description, value.LineNumber));
+                    });
+                } else {
+                    $('#ddlSubdistBayar').empty();
+                    $('#ddlSubdistBayar').append(new Option('--Select Subdist--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlSubdistBayar').append(new Option(value.SubdistDisplay, value.KodeSubDist));
+                    });
+                }
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+
+    function EditPA(button) {
+        var _ExpenseItem = $(this).closest('tr').find('td:eq(2)').text();
+        var _Remarks = $(this).closest('tr').find('td:eq(3)').text();
+        var _EO = $(this).closest('tr').find('td:eq(4)').text();
+        var _Bank = $(this).closest('tr').find('td:eq(5)').text();
+        var _Rekening = $(this).closest('tr').find('td:eq(6)').text();
+        var _NamaRekening = $(this).closest('tr').find('td:eq(7)').text();
+        var _Jumlah = $(this).closest('tr').find('td:eq(8)').text();
+        $("#txtExpenseEdit").val(_ExpenseItem);
+        $("#txtRemarksEdit").val(_Remarks);
+        $("#txtEOEdit").val(_EO);
+        $("#txtBankEdit").val(_Bank);
+        $("#txtRekeningBankEdit").val(_Rekening);
+        $("#txtNamaRekening").val(_NamaRekening);
+        $("#txtJumlahEditNow").val(_Jumlah);
+        $("#txtJumlahEdit").val(_Jumlah);
+    }
+
+    $(document).on("click", "#tblDetailMemo button.delete", function () {
+        var _ExpenseItem = $(this).closest('tr').find('td:eq(2)').text();
+        var _Remarks = $(this).closest('tr').find('td:eq(3)').text();
+        var _EO = $(this).closest('tr').find('td:eq(4)').text();
+        var _Bank = $(this).closest('tr').find('td:eq(5)').text();
+        var _Rekening = $(this).closest('tr').find('td:eq(6)').text();
+        var _NamaRekening = $(this).closest('tr').find('td:eq(7)').text();
+        var _Jumlah = $(this).closest('tr').find('td:eq(8)').text();
+        $("#txtExpenseEdit").val(_ExpenseItem);
+        $("#txtRemarksEdit").val(_Remarks);
+        $("#txtEOEdit").val(_EO);
+        $("#txtBankEdit").val(_Bank);
+        $("#txtRekeningBankEdit").val(_Rekening);
+        $("#txtNamaRekening").val(_NamaRekening);
+        $("#txtJumlahEditNow").val(_Jumlah);
+        $("#txtJumlahEdit").val(_Jumlah);
+
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    $("#btnSaveEditModal").click(function () {
+        var _ExpenseItem = $("#txtExpenseEdit").val();
+        var _Remarks = $("#txtRemarksEdit").val();
+        var _EO = $("#txtEOEdit").val();
+        var _Bank = $("#txtBankEdit").val();
+        var _Rekening = $("#txtRekeningBankEdit").val();
+        var _NamaRekening = $("#txtNamaRekening").val();
+        var _Jumlah = $("#txtJumlahEditNow").val();
+        var _JumlahEdited = $("#txtJumlahEdit").val();
+        var _NoMemo = $("#ddlMemo").val();
+
+        $.ajax({
+            url: 'SaveEditDetailPA',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 3,
+                SP: "[dbo].[STP_CreatePA]",
+                NoMemo: _NoMemo,
+                SiteUsedId: $("#ddlSubdistBayar").val(),
+                ItemExpense: _ExpenseItem,
+                Bank: _Bank,
+                Rekening: _NamaRekening,
+                NoRekening: _Rekening,
+                EO: _EO,
+                Amount: _Jumlah,
+                Remarks: _Remarks,
+                AmountChange: _JumlahEdited,
+                RemarksChange: _Remarks
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $('#tblDetailMemo').DataTable({
+                    "pageLength": 10,
+                    "lengthChange": true,
+                    "searching": false,
+                    "data": JSON.parse(data),
+                    "select": true,
+                    "bDestroy": true,
+                    "scrollCollapse": true,
+                    "columns": [
+                        {
+                            "data": null,
+                            "defaultContent": "<input type='checkbox' name='type' onchange='Checked(this)'>"
+                        },
+                        { "data": "No" },
+                        { "data": "ExpenseItemName" },
+                        { "data": "Remarks" },
+                        { "data": "EO" },
+                        { "data": "Bank" },
+                        { "data": "NoRekening" },
+                        { "data": "Rekening" },
+                        { "data": "Amount" },
+                        {
+                            "data": null,
+                            //"<input type='button' class='btn btn- primary' id='btn_EditPA' value='Edit' data-toggle='modal' data-target='#EditPA' onClick='EditPA()'/>"
+                            "defaultContent": "<button class='form-control-sm delete' type='button' name='delete' data-toggle='modal' data-target='#EditPA'>Edit</button>"
+                        },
+                    ]
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+
+    });
+
+    $("#btnCreatePA").click(function () {
+        var _ExpenseItem = $("#ddlItemExpense").val();
+        var _NoMemo = $("#ddlMemo").val();
+        var _SiteUsedId = $("#ddlSubdistBayar").val();
+        var table = $('#tblDetailMemo').DataTable();
+        var LineNumb = [];
+
+        for (var i = 1; i <= table.data().count(); i++) {
+            var row = $("#tblDetailMemo tr").eq(i);
+            if ($("TD", row).eq(0).find("input[type='checkbox']").prop('checked') == true) {
+                var row = $("#tblDetailMemo tr").eq(i);
+                var item = $("TD", row).eq(1).html();
+                LineNumb.push(item);
+            }
+        }
+        
+        $.ajax({
+            url: 'CreatePAExec',
+            type: 'post',
+            data: JSON.stringify({
+                Option: 4,
+                SP: "[dbo].[STP_CreatePA]",
+                NoMemo: _NoMemo,
+                SiteUsedId: $("#ddlSubdistBayar").val(),
+                ItemExpense: _ExpenseItem,
+                NoPool: LineNumb
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $.each(JSON.parse(data), function (key, value) {
+                    if (value.Status == 'VALID') {
+                        Swal.fire(
+                            'Success',
+                            'Payment Approval berhasil dibuat dengan nomor : ' + value.NoPA,
+                            'success'
+                        )
+                        $("#btnCreatePA").prop("hidden", true);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 7000);
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            'Payment Approval tidak berhasil dibuat, nomor Memo masih dapat digunakan',
+                            'Error'
+                        )
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+
+    });
+
+    $("#txtJumlahEdit").keyup(function () {
+        var JumlahNow = $("#txtJumlahEditNow").val();
+        var Jumlah = $("#txtJumlahEdit").val();
+        
+        if (parseInt(Jumlah) > JumlahNow) {
+            Swal.fire(
+                'Warning',
+                'Jumlah tidak boleh melebihi jumlah awal',
+                'error'
+            );
+            $("#txtJumlahEdit").val(JumlahNow);
+        }
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    function PopulateDetailMemo() {
+        var _Option;
+        if ($("#ddlItemExpense").val() == "PM") {
+            _Option = 6;
+        } else {
+            _Option = 2;
+        }
+        var username = $("#lblUsername").text();
+        $.ajax({
+            url: 'PopulateDataGeneral',
+            type: 'post',
+            data: JSON.stringify({
+                Option: _Option,
+                SP: "[dbo].[STP_CreatePA]",
+                NoMemo: $("#ddlMemo").val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $('#tblDetailMemo').DataTable({
+                    "pageLength": 10,
+                    "lengthChange": true,
+                    "searching": false,
+                    "data": data,
+                    "select": true,
+                    "bDestroy": true,
+                    "scrollCollapse": true,
+                    "columns": [
+                        {
+                            "data": null,
+                            "defaultContent": "<input type='checkbox' name='type'>"
+                        },
+                        { "data": "No" },
+                        { "data": "ExpenseItemName" },
+                        { "data": "Remarks" },
+                        { "data": "EO" },
+                        { "data": "Bank" },
+                        { "data": "NoRekening" },
+                        { "data": "Rekening" },
+                        { "data": "Amount" },
+                        {
+                            "data": null,
+                            //"<input type='button' class='btn btn- primary' id='btn_EditPA' value='Edit' data-toggle='modal' data-target='#EditPA' onClick='EditPA()'/>"
+                            "defaultContent": "<button class='form-control-sm delete' type='button' name='delete' data-toggle='modal' data-target='#EditPA'>Edit</button>"
+                        },
+                    ]
+                });
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+</script>

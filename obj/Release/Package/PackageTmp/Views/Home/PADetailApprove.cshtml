@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "PADetailApprove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="row" style="text-align:center;text-align:center;display:block;margin:auto;background-color:gray;color:white;">
+            <h3>PAYMENT APPROVAL</h3>
+        </div>
+        <div class="row" hidden="hidden">
+            <table id="tblPendingPA" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th width="2%"></th>
+                        <th width="5%">No</th>
+                        <th width="20%">No Payment</th>
+                        <th width="25%">Subdist</th>
+                        <th width="20%">Amount</th>
+                        <th width="10%">Detail</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyPendingPA">
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="float:left;">
+                <table id="tblHeaderLeft" border="1" class="table table-striped table-bordered zero-configuration">
+                    <thead>
+                        <tr>
+                            <th width="40%"></th>
+                            <th width="60%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyHeadLeft">
+                        <tr>
+                            <td>No Approval</td>
+                            <td><label id="lblNoPA">@ViewBag.NoPA</label></td>
+                        </tr>
+                        <tr>
+                            <td>Cabang</td>
+                            <td><label id="lblCabang"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Kepada Subdist</td>
+                            <td><label id="lblSubdist"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Cetak</td>
+                            <td><label id="lblTglCetak"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Pembayaran</td>
+                            <td><label id="lblTglPembayaran"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4" style="float:right;">
+
+            </div>
+            <div class="col-md-4" id="DivNoMemo" style="float:right;" hidden="hidden">
+                <table id="tblNoMemo" border="1" class="table table-striped table-bordered zero-configuration">
+                    <thead>
+                        <tr>
+                            <th width="40%"></th>
+                            <th width="60%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyNoMemo">
+                        <tr>
+                            <td>No Memo</td>
+                            <td><label id="lblNoMemo"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4" id="DivNoSPB" hidden="hidden" style="float:right;">
+                <table id="tblNoSPB" border="1" class="table table-striped table-bordered zero-configuration">
+                    <thead>
+                        <tr>
+                            <th width="40%"></th>
+                            <th width="60%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyNoSPB">
+                        <tr>
+                            <td>No SPB</td>
+                            <td><label id="lblNoSPB"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblPADetail" border="1" class="table table-striped table-bordered zero-configuration">
+                    <thead>
+                        <tr>
+                            <th width="5%" style="text-align:center;">NO</th>
+                            <th width="25%" style="text-align:center;">RINCIAN BIAYA EVENT/PROGRAM/PROJECT</th>
+                            <th width="20%" style="text-align:center;">EO/SUBDIST</th>
+                            <th width="10%" style="text-align:center;">BANK</th>
+                            <th width="10" style="text-align:center;">NO REK</th>
+                            <th width="20%" style="text-align:center;">ATAS NAMA</th>
+                            <th width="10%" style="text-align:center;">JUMLAH</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyPADetail">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                            </td>
+                            <td>GRAND TOTAL</td>
+                            <td><label id="lblGrandTotal"></label></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <label id="lblTerbilang" style="border:solid 1px black;">
+                    </label>
+                </div>
+                <div class="row">
+                    <i>*Payment ini harus direlaisasikan 14 hari kerja dari tanggal di terima PA oleh Subdist</i>
+                    <br />
+                    <i>*Bukti Transfer WAJIB diemail ke julyana.napitupulu@gmail.com dan <b>Dicantumkan</b> tanggal transfer dan nomor PA (Payment Approval)</i>
+                    <br />
+                    <br />
+                    <i>Deminikanlah Payment Approval ini kami untuk direalisasikan. Atas perhatian dan kerja samanya, kami ucapkan terima kasih</i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <table id="tblPADetailFooter" border="1" style="width:100%" class="table table-striped table-bordered zero-configuration">
+                    <thead>
+                        <tr>
+                            <th width="50%"></th>
+                            <th width="50%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Saldo Awal</td>
+                            <td><label id="lblSaldoAwal"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Penerimaan</td>
+                            <td><label id="lblPenerimaan"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Pengeluaran</td>
+                            <td><label id="lblPengeluaran"></label></td>
+                        </tr>
+                        <tr>
+                            <td>Saldo Akhir</td>
+                            <td><label id="lblSaldoAkhir"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div id="divButton">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <button class="paginate_button btn btn-primary btn-lg" id="btnApprove" style="background-color:green;color:white;">Approve</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="paginate_button btn btn-primary btn-lg" id="btnReject" style="background-color:red;color:white;">Reject</button>
+                    </div>
+                </div>
+               
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-2">
+                    <label id="lblRejectReason">Alasan Reject :</label>
+                </div>
+                <div class="col-md-8">
+                    <textarea rows="4" cols="50" name="memReason" id="memReason" form="usrform"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/sweetalert2.all.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        GetAllParamter();
+        LoadPADetail();
+
+        $("#btnApprove").click(function () {
+            Swal.fire({
+                title: "Anda yakin melakukan Approve?",
+                text: "Anda tidak dapat membatalkan proses bila telah melakukan Approve!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#02c0ce",
+                cancelButtonColor: "#f1556c",
+                confirmButtonText: "Ya, Save!"
+            }).then(function (result) {
+                if (result.value) {
+                    var NoPASend = $("#lblNoPA").text();
+                    $.ajax({
+                        url: "ApproveSingle?NoPA=" + NoPASend,
+                        type: "post",
+                        dataType: "json",
+                        //data: JSON.stringify(dto),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (data) {
+                            Swal.fire("Approved!", "Approve PA berhasil", "success");
+                            AfterExecute();
+                        },
+                        error: function (ex) {
+                            alert(JSON.stringify(ex));
+                        }
+                    });
+                }
+            });
+        });
+
+        $("#btnReject").click(function () {
+            Swal.fire({
+                title: "Anda yakin melakukan Reject?",
+                text: "Anda tidak dapat membatalkan proses bila telah melakukan Reject!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#02c0ce",
+                cancelButtonColor: "#f1556c",
+                confirmButtonText: "Ya, Save!"
+            }).then(function (result) {
+                if (result.value) {
+                    var NoPASend = $("#lblNoPA").text();
+                    var RejectReasonSend = $("#memReason").val();
+                    if (RejectReasonSend == null || RejectReasonSend == '') {
+                        Swal.fire("Warning!", "Alasan Reject tidak boleh kosong", "error");
+                        return;
+                    }
+                    $.ajax({
+                        url: "RejectSingle?NoPA=" + NoPASend + "&RejectReason=" + RejectReasonSend,
+                        type: "post",
+                        dataType: "json",
+                        //data: JSON.stringify(dto),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (data) {
+                            Swal.fire("Rejected!", "Reject PA berhasil", "success");
+                            AfterExecute();
+                        },
+                        error: function (ex) {
+                            alert(JSON.stringify(ex));
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    function GetAllParamter() {
+        var NoPASend = $("#lblNoPA").text();
+        $.ajax({
+            url: "GetAllParameter?NoPA=" + NoPASend,
+            type: "post",
+            dataType: "json",
+            //data: JSON.stringify(dto),
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                $("#lblCabang").text(data[0].NamaCabang);
+                $("#lblSubdist").text(data[0].SubdistDisplay);
+                $("#lblTglCetak").text(data[0].TanggalCetak);
+                $("#lblTglPembayaran").text(data[0].TanggalPembayaran);
+                $("#lblNoMemo").text(data[0].NoMemoTO);
+                $("#lblNoSPB").text(data[0].NoSPB);
+                $("#lblSaldoAwal").text(data[0].SaldoAwal);
+                $("#lblPenerimaan").text(data[0].SaPenerimaan);
+                $("#lblPengeluaran").text(data[0].NilaiPA);
+                $("#lblSaldoAkhir").text(data[0].SaldoAkhir);
+                $("#lblGrandTotal").text(data[0].GrandTotal);
+                var TerbilangText = "TERBILANG : " + data[0].Terbilang;
+                $("#lblTerbilang").text(TerbilangText);
+
+                if (data[0].NoMemoTO != '-') {
+                    $("#DivNoMemo").attr("hidden", false);
+                }
+
+                if (data[0].NoSPB != '-') {
+                    $("#DivNoSPB").attr("hidden", false);
+                }
+            },
+            error: function (ex) {
+                alert(JSON.stringify(ex));
+            }
+        });
+    }
+    function LoadPADetail() {
+        var NoPASend = $("#lblNoPA").text();
+
+        $.ajax({
+            type: "POST",
+            url: "LoadPADetail?NoPA=" + NoPASend,
+            success: function (response) {
+                var table = $('#tblPADetail').DataTable({
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": false,
+                    "data": response,
+                    "columns": [
+                        { "data": "No" },
+                        { "data": "NoteEvent" },
+                        { "data": "Eo" },
+                        { "data": "Bank" },
+                        { "data": "RekeningBank" },
+                        { "data": "NamaRekening" },
+                        { "data": "Amount"}
+                    ],
+                    "order": [[1, 'asc']]
+                });
+            }
+        });
+    }
+    function AfterExecute() {
+        $("#divButton").attr("hidden", true);
+    }
+</script>
+
+
+

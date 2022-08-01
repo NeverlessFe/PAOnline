@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "ClaimDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3><b>Claim Detail</b></h3>
+
+<hr />
+<div class="col-md-12">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Apply Date</label>
+        <div class="col-sm-10">
+            <input type="text" id="simpleinput" class="form-control" value="25 Oktober 2021" readonly>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Region</label>
+        <div class="col-sm-10">
+            <select class="form-control">
+                <option disabled selected>Region 3</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+                <option>Region 4</option>
+                <option>Region 5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Cabang</label>
+        <div class="col-sm-10">
+            <select class="form-control">
+                <option disabled selected>Bandung</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+                <option>Region 4</option>
+                <option>Region 5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Subdist Bayar</label>
+        <div class="col-sm-10">
+            <select class="form-control">
+                <option disabled selected>PT Masamedi Intifarmindo || 3301050</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+                <option>Region 4</option>
+                <option>Region 5</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense Header</label>
+        <div class="col-sm-10">
+            <select class="form-control">
+                <option disabled selected>Imbal Jasa</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+                <option>Region 4</option>
+                <option>Region 5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense</label>
+        <div class="col-sm-10">
+            <select class="form-control">
+                <option disabled selected>Biaya BPSJ</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+                <option>Region 4</option>
+                <option>Region 5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">EO/Supplier/Subdist</label>
+        <div class="col-sm-10">
+            <input type="text" id="simpleinput" class="form-control" value="PT Masamedi Intifarmindo">
+        </div>
+    </div>
+
+    <div class="form-group row">
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="col-sm-2 col-form-label" for="simpleinput">Bank</label>
+            <div class="col-sm-10">
+                <input type="text" id="simpleinput" class="form-control" value="BCA">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="col-sm-5 col-form-label" for="simpleinput">Nama Rekening</label>
+            <div class="col-sm-12">
+                <input type="text" id="simpleinput" class="form-control" value="Testing Nama Rekening">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="col-sm-5 col-form-label" for="simpleinput">Rekening Bank</label>
+            <div class="col-sm-12">
+                <input type="text" id="simpleinput" class="form-control" value="123456789">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="example-number">Amount</label>
+        <div class="col-md-10">
+            <input class="form-control" id="example-number" type="number" name="number" placeholder="250.000">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="example-textarea">Remarks</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" rows="5" id="example-textarea" placeholder="Biaya BPJS Cabang Bandung atas Nama Dodi Dodian"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive col-md-12" id="divUnPrinted">
+            <table id="tblUnPrintedPA" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th width="10%">Region</th>
+                        <th width="10%">Cabang</th>
+                        <th width="20%">Subdist</th>
+                        <th width="10%">Item Expense</th>
+                        <th width="10%">Amout</th>
+                        <th width="35%">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyPrintedPA">
+                    <tr>
+                        <td>1</td>
+                        <td>Region 3</td>
+                        <td>Bandung</td>
+                        <td>PT Masamedi Intifarmindo || 1234523</td>
+                        <td>Biaya BPJS</td>
+                        <td>250.000,00</td>
+                        <td>Biaya BPJS Cabang Bandung atas Nama Dodi Dodian</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button style="color:red;">Close Claim</button>
+        </div>
+    </div>
+</div>
+

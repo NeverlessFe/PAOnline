@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "PAMonitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+        .bd-example-modal-lg .modal-dialog .modal-content {
+            background-color: transparent;
+            border: none;
+        }
+</style>
+<div class="container">
+    <div class="col-md-12">
+        <h3><b>PA Monitoring</b></h3>
+        <hr />
+        
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table id="tblPendingPA" class="table table-striped table-bordered zero-configuration" style="width:99%;">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="20%">No Payment</th>
+                                <th width="25%">Subdist</th>
+                                <th width="10%">Amount</th>
+                                <th width="5%">Status</th>
+                                <th width="5%">Reject Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyPendingPA">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/sweetalert2.all.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    var TypeChecked = [];
+
+    function modal() {
+        $('.modal').modal('show');
+        setTimeout(function () {
+            console.log('hejsan');
+            $('.modal').modal('hide');
+        }, 3000);
+    }
+    $(document).ready(function () {
+        PopulateData();
+    });
+
+    function PopulateData() {
+        var dto = { Option: "54" }
+        $.ajax({
+            type: "POST",
+            url: "GetPrintedGetData",
+            dataType: "json",
+            data: JSON.stringify(dto),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                console.log(response);
+                var table = $('#tblPendingPA').DataTable({
+                    "pageLength": 5,
+                    "lengthChange": true,
+                    "searching": true,
+                    "bDestroy": true,
+                    "data": JSON.parse(response),
+                    "columns": [
+                        { "data": "No" },
+                        { "data": "NoPayment" },
+                        { "data": "Subdist" },
+                        { "data": "Amount" },
+                        { "data": "Status" },
+                        { "data":"RejectReason"}
+                    ],
+                    "order": [[0, 'asc']]
+                });
+            }
+        });
+    }
+
+ </script>

@@ -1,0 +1,484 @@
+﻿
+@{
+    ViewBag.Title = "CreateMemo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #GoToRedirectAction{
+        background-color: #3483eb;
+        color: white;
+        padding: 14px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    #GoToRedirectAction {
+        background-color: red;
+    }
+</style>
+<h3><b>Create Memo Claim</b></h3>
+
+<hr />
+<div class="col-md-12">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Apply Date</label>
+        <div class="col-sm-10">
+            @{
+                @Html.Label("ApplyDate", string.Format("{0:F}", System.DateTime.Now.ToString("dd-MM-yyyy")), new { id = "lblApplydate" })
+            }
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Type Memo</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlType">
+                <option disabled selected>--Pilih Type--</option>
+                <option value="TC">TC</option>
+                <option value="SM">SM</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense Header</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlHeaderExpense">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Item Expense</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlItemExpense">
+            </select>
+        </div>
+    </div>
+
+    @*----------------------------------------------------------------------------------------------------------*@
+    <div class="form-group col-md-2" hidden id="divQPLapis">
+        <input type="button" class="btn btn-primary" id="btn_CancelCAPA" value="Insert QP Lapis" data-toggle="modal" data-target="#QPLapis" />
+    </div>
+
+    <div class="modal fade" id="QPLapis" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detail QP Lapis</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Asal Subdist</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtSubdistAsal" class="form-control" placeholder="Input Subdist">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtAlamatSubdistAsal" class="form-control" placeholder="Input Alamat">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Cabang</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtCabangSubdistAsal" class="form-control" placeholder="Input Cabang">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tujuan Subdist</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtSubdistTujuan" class="form-control" placeholder="Input Subdist">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtAlamatSubdistTujuan" class="form-control" placeholder="Input Alamat">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Cabang</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtCabangSubdistTujuan" class="form-control" placeholder="Input Cabang">
+                            </div>
+                        </div>
+
+                        <button type="button" id="btnCloseModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*----------------------------------------------------------------------------------------------------------*@
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Subdist</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="ddlSubdistBayar">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="simpleinput">Kepada (HeaderMemo)</label>
+        <div class="col-sm-10">
+            <input type="text" id="txtTo" class="form-control" placeholder="Input Kepada HeaderMemo">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Periode</label>
+        <div class="col-sm-10">
+            <input type="text" id="txtPeriod" class="form-control" placeholder="Input Periode">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penandatangan 1</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtPenandatangan1" class="form-control" placeholder="Input Penandatangan1">
+        </div>
+        <label class="col-sm-1 col-form-label">Jabatan</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtjabtan1" class="form-control" placeholder="Input Jabatan">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penandatangan 2</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtPenandatangan2" class="form-control" placeholder="Input Penandatangan2">
+        </div>
+        <label class="col-sm-1 col-form-label">Jabatan</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtjabtan2" class="form-control" placeholder="Input Jabatan">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penandatangan 3</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtPenandatangan3" class="form-control" placeholder="Input Penandatangan3">
+        </div>
+        <label class="col-sm-1 col-form-label">Jabatan</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtjabtan3" class="form-control" placeholder="Input Jabatan">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penandatangan 4</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtPenandatangan4" class="form-control" placeholder="Input Penandatangan4">
+        </div>
+        <label class="col-sm-1 col-form-label">Jabatan</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtjabtan4" class="form-control" placeholder="Input Jabatan">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Penandatangan 5</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtPenandatangan5" class="form-control" placeholder="Input Penandatangan5">
+        </div>
+        <label class="col-sm-1 col-form-label">Jabatan</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtjabtan5" class="form-control" placeholder="Input Jabatan">
+        </div>
+    </div>
+
+    <div id="divDetailtable">
+        <div class="row">
+            <div class="table-responsive col-md-12" id="divUnPrinted">
+                <table id="tblNoClaimList" class="table table-striped table-bordered zero-configuration" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th width="20%">NoClaim</th>
+                            <th width="15">Subdist</th>
+                            <th width="10%">Expense Item</th>
+                            <th width="20%">Amount</th>
+                            <th width="20%">ApplyDate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyPrintedPA">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button id="btnCreateMemo" class="btn btn-primary">Create Memo</button>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="example-number">No Memo</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="txtNoMemo" />
+            </div>
+        </div>
+    </div>
+
+    <div id="divPrintMemo" hidden>
+        @*<a href="@Url.Action("ExportCustomers")"> Report PDF </a>*@
+        <a id="GoToRedirectAction" data-url="@Url.Action("ExportCustomers")"><b>Print Memo</b></a>
+    </div>
+    <script>
+        var TypeChecked = [];
+        $(document).ready(function () {
+            GetItemExpenseHeader();
+            $('a#GoToRedirectAction').click(function () {
+                window.location.href = $(this).data('url') + "?Option=3&TypeMemo=" + $("#ddlType").val() + "+&ItemExpense=" + $("#ddlItemExpense").val() + "&KodeSubdist=" + $("#ddlSubdistBayar").val() + "&NoMemo=" + $("#txtNoMemo").val();
+            });
+
+            $("#ddlItemExpense").change(function () {
+                GetSubdist();
+                if ($("#ddlItemExpense").val() == "QPL") {
+                    $("#divQPLapis").prop("hidden", false);
+                } else {
+                    $("#divQPLapis").prop("hidden", true);
+                }
+            });
+
+            $("#ddlHeaderExpense").change(function () {
+                GetExpenseItem();
+                $('#ddlSubdistBayar').empty();
+            });
+
+            $("#ddlItemExpense").change(function () {
+                GetSubdistByExpenseItem();
+            });
+
+            $("#ddlSubdistBayar").change(function () {
+                GetClaimTable();
+            });
+
+            $("#btnCreateMemo").click(function () {
+                $.ajax({
+                    url: 'CreateMemoExec',  
+                    type: 'post',
+                    data: JSON.stringify({
+                        Option: 2,
+                        TypeMemo: $("#ddlType").val(),
+                        ItemExpense: $("#ddlItemExpense").val(),
+                        NoClaimList: TypeChecked,
+                        Periode: $("#txtPeriod").val(),
+                        Ttd1: $("#txtPenandatangan1").val(),
+                        Ttd2: $("#txtPenandatangan2").val(),
+                        Ttd3: $("#txtPenandatangan3").val(),
+                        Ttd4: $("#txtPenandatangan4").val(),
+                        Ttd5: $("#txtPenandatangan5").val(),
+                        Jbt1: $("#txtjabtan1").val(),
+                        Jbt2: $("#txtjabtan2").val(),
+                        Jbt3: $("#txtjabtan3").val(),
+                        Jbt4: $("#txtjabtan4").val(),
+                        Jbt5: $("#txtjabtan5").val(),
+                        ToHeader: $("#txtTo").val(),
+                        SubdistQP1: $("#txtSubdistAsal").val(),
+                        AlamatQP1: $("#txtAlamatSubdistAsal").val(),
+                        CabangQP1: $("#txtCabangSubdistAsal").val(),
+                        SubdistQP2: $("#txtSubdistTujuan").val(),
+                        AlamatQP2: $("#txtAlamatSubdistTujuan").val(),
+                        CabangQP2: $("#txtCabangSubdistTujuan").val()
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        console.log(data);
+                        var value = JSON.parse(data);
+                        $.each(JSON.parse(data), function (key, value) {
+                            $("#txtNoMemo").val(value.NoMemo);
+                        });
+
+                        Swal.fire(
+                            'Success',
+                            'Memo berhasil dibuat dengan nomor Memo : ' + $("#txtNoMemo").val(),
+                            'success'
+                        )
+
+                        $("#divPrintMemo").prop("hidden", false);
+                        $("#btnCreateMemo").prop("disabled", true);
+                    },
+                    error: function (ex) {
+                        alert(JSON.stringify(ex));
+                    }
+                });
+            });
+
+        });
+
+        function GetClaimTable() {
+            $.ajax({
+                url: 'GetDLL',
+                type: 'post',
+                data: JSON.stringify({
+                    Option: 9,
+                    SP: "[dbo].[STP_ClaimDDL]",
+                    SiteUsedId: $("#ddlSubdistBayar").val()
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+
+                    $('#tblNoClaimList').DataTable({
+                        "pageLength": 10,
+                        "lengthChange": true,
+                        "searching": false,
+                        "data": JSON.parse(data),
+                        "select": true,
+                        "bDestroy": true,
+                        "scrollCollapse": true,
+                        "columns": [{
+                            "data": null,
+                            "defaultContent": "<input type='checkbox' name='type' onchange='Checked(this)'>"
+                        },
+                          
+                            { "data": "NoClaim_PK" },
+                            { "data": "SubdistDisplay" },
+                            { "data": "ExpenseItemName" },
+                            { "data": "Amount" },
+                            { "data": "ApplyDate" },
+                        ]
+                    });
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        }
+
+        function GetSubdistByExpenseItem() {
+            var username = $("#lblUsername").text();
+            $.ajax({
+                url: 'GetDLL',
+                type: 'post',
+                data: JSON.stringify({
+                    Option: 6,
+                    SP: "[dbo].[STP_ClaimDDL]",
+                    ItemExpense: $("#ddlItemExpense").val()
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    $('#ddlSubdistBayar').empty();
+                    $('#ddlSubdistBayar').append(new Option('--Select Subdist--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlSubdistBayar').append(new Option(value.SubdistDisplay, value.KodeSubDist));
+                    });
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        }
+
+        function GetExpenseItem() {
+            var username = $("#lblUsername").text();
+            $.ajax({
+                url: 'GetDLL',
+                type: 'post',
+                data: JSON.stringify({
+                    Option: 8,
+                    SP: "[dbo].[STP_ClaimDDL]",
+                    HeaderExpense: $("#ddlHeaderExpense").val()
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    $('#ddlItemExpense').empty();
+                    $('#ddlItemExpense').append(new Option('--Select Item Expense--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlItemExpense').append(new Option(value.ExpenseItemName, value.ExpenseItemCode));
+                    });
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        }
+
+        function GetItemExpenseHeader() {
+            $.ajax({
+                url: 'GetDLL',
+                type: 'post',
+                data: JSON.stringify({
+                    Option: 7,
+                    SP: "[dbo].[STP_ClaimDDL]"
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    $('#ddlHeaderExpense').empty();
+                    $('#ddlHeaderExpense').append(new Option('--Select Header Expense--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlHeaderExpense').append(new Option(value.Description, value.HeaderExpenseID));
+                    });
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        }
+
+        function GetSubdist() {
+            $.ajax({
+                url: 'GetDLL',
+                type: 'post',
+                data: JSON.stringify({
+                    Option: 6,
+                    SP: "[dbo].[STP_ClaimDDL]",
+                    ItemExpense: $("#ddlItemExpense").val()
+                }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    $('#ddlSubdistBayar').empty();
+                    $('#ddlSubdistBayar').append(new Option('--Select Subdist--', null));
+                    $.each(JSON.parse(data), function (key, value) {
+                        $('#ddlSubdistBayar').append(new Option(value.SubdistDisplay, value.KodeSubDist));
+                    });
+                },
+                error: function (ex) {
+                    alert(JSON.stringify(ex));
+                }
+            });
+        }
+
+        function Checked(input) {
+            var row = $(input).closest("TR");
+            var NoClaim = $("TD", row).eq(1).html();
+
+            if (jQuery.inArray(NoClaim, TypeChecked) !== -1) {
+                console.log('masuk sini');
+                TypeChecked = $.grep(TypeChecked, function (value) {
+                    return value != NoClaim;
+                });
+            } else {
+                TypeChecked.push(NoClaim);
+                console.log('gak masuk');
+            }
+            console.log(TypeChecked);
+        }
+    </script>
+</div>
+
+

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataMemo" targetNamespace="http://tempuri.org/DataMemo.xsd" xmlns:mstns="http://tempuri.org/DataMemo.xsd" xmlns="http://tempuri.org/DataMemo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataMemo" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataMemo" msprop:Generator_UserDSName="DataMemo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataHeader" msprop:Generator_TableClassName="DataHeaderDataTable" msprop:Generator_TableVarName="tableDataHeader" msprop:Generator_RowChangedName="DataHeaderRowChanged" msprop:Generator_TablePropName="DataHeader" msprop:Generator_RowDeletingName="DataHeaderRowDeleting" msprop:Generator_RowChangingName="DataHeaderRowChanging" msprop:Generator_RowEvHandlerName="DataHeaderRowChangeEventHandler" msprop:Generator_RowDeletedName="DataHeaderRowDeleted" msprop:Generator_RowClassName="DataHeaderRow" msprop:Generator_UserTableName="DataHeader" msprop:Generator_RowEvArgName="DataHeaderRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NoMemo" msprop:Generator_ColumnVarNameInTable="columnNoMemo" msprop:Generator_ColumnPropNameInRow="NoMemo" msprop:Generator_ColumnPropNameInTable="NoMemoColumn" msprop:Generator_UserColumnName="NoMemo" type="xs:string" minOccurs="0" />
+              <xs:element name="Kepada" msprop:Generator_ColumnVarNameInTable="columnKepada" msprop:Generator_ColumnPropNameInRow="Kepada" msprop:Generator_ColumnPropNameInTable="KepadaColumn" msprop:Generator_UserColumnName="Kepada" type="xs:string" minOccurs="0" />
+              <xs:element name="CC" msprop:Generator_ColumnVarNameInTable="columnCC" msprop:Generator_ColumnPropNameInRow="CC" msprop:Generator_ColumnPropNameInTable="CCColumn" msprop:Generator_UserColumnName="CC" type="xs:string" minOccurs="0" />
+              <xs:element name="Dari" msprop:Generator_ColumnVarNameInTable="columnDari" msprop:Generator_ColumnPropNameInRow="Dari" msprop:Generator_ColumnPropNameInTable="DariColumn" msprop:Generator_UserColumnName="Dari" type="xs:string" minOccurs="0" />
+              <xs:element name="DateMemo" msprop:Generator_ColumnVarNameInTable="columnDateMemo" msprop:Generator_ColumnPropNameInRow="DateMemo" msprop:Generator_ColumnPropNameInTable="DateMemoColumn" msprop:Generator_UserColumnName="DateMemo" type="xs:string" minOccurs="0" />
+              <xs:element name="Remarks" msprop:Generator_ColumnVarNameInTable="columnRemarks" msprop:Generator_ColumnPropNameInRow="Remarks" msprop:Generator_ColumnPropNameInTable="RemarksColumn" msprop:Generator_UserColumnName="Remarks" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
